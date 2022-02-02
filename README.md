@@ -1,9 +1,9 @@
 # React Native Blog App
 
-installation:
+installation and usage:<br/>
 
-`git clone https://github.com/YunusEmreUyar/blogMobile.git`
-`cd blogMobile`
-`npm install`
-`expo start`
+`git clone https://github.com/YunusEmreUyar/blogMobile.git`<br/>
+`cd blogMobile`<br/>
+`npm install`<br/>
+`expo start`<br/>
 
