@@ -4,7 +4,6 @@ import AppLoading from "expo-app-loading";
 import { useEffect, useState } from 'react';
 import { LogBox } from 'react-native';
 import HomeStack from './routes/homeStack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
 
@@ -13,8 +12,6 @@ export default function App() {
       'VirtualizedLists should never be nested',
       '[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!"'
     ]);
-    AsyncStorage.getAllKeys()
-    .then(val => console.log(val));
   });
 
   const [isReady, setIsReady] = useState(false);

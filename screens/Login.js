@@ -2,8 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Image, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
 import colors from '../assets/colors/color';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
-const proxy = 'http://artandmovieisnotgonnabethename.herokuapp.com/';
+import {authenticate} from '../utils/AuthUtils';
 
 class Login extends React.Component {
 
@@ -14,42 +13,6 @@ class Login extends React.Component {
             password: ''
         };
         this.navigation = props.navigation;
-    }
-
-    authenticate = () => {
-
-        if(this.state.username.length < 3 || this.state.password.length < 3) {
-            return Alert.alert("Response", "Credentials must be longer than 3 digits.");
-        }
-
-        fetch(proxy+"api/token/", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.password
-            })
-        })
-        .then(resp => resp.json())
-        .then(json => {
-            if(json.detail) {
-                Alert.alert(
-                    "Response",
-                    json.detail
-                );
-            } else {
-                try {
-                AsyncStorage.setItem("username", this.state.username);
-                AsyncStorage.setItem("password", this.state.password);
-                AsyncStorage.setItem("token", json.access);    
-                this.navigation.navigate("Home");
-                } catch (error) {    
-                }
-            }
-        })
-        .catch(err => {});
     }
 
     setUsername = (e) => {
@@ -86,7 +49,7 @@ class Login extends React.Component {
 
                     <TouchableOpacity
                         style={styles.loginBtn}
-                        onPress={this.authenticate}
+                        onPress={() => authenticate(this.state.username, this.state.password, this.navigation)}
                     >
                         <Text style={styles.loginBtnText}>Login</Text>
                     </TouchableOpacity>

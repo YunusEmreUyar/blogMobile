@@ -3,7 +3,8 @@ import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaVi
 import SkeletonContent from "react-native-skeleton-content";
 import Feather from 'react-native-vector-icons/Feather';
 import colors from '../assets/colors/color';
-import GoBackButton from './GoBackButton';
+import GoBackButton from '../components/GoBackButton';
+import Card from '../components/Card';
 
 Feather.loadFont();
 const proxy = "https://artandmovieisnotgonnabethename.herokuapp.com";

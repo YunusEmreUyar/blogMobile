@@ -1,10 +1,10 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import Home from '../components/Home';
-import Details from '../components/Details';
-import UserPosts from '../components/UserPost';
-import Category from '../components/Category';
-import Login from '../components/Login';
-import Register from '../components/Register';
+import Home from '../screens/Home';
+import Details from '../screens/Details';
+import UserPosts from '../screens/UserPost';
+import Category from '../screens/Category';
+import Login from '../screens/Login';
+import Register from '../screens/Register';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

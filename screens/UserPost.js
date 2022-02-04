@@ -2,8 +2,8 @@ import React from "react";
 import { Text, View, StyleSheet, ScrollView, SafeAreaView, FlatList, Image, Dimensions } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import colors from '../assets/colors/color';
-import GoBackButton from './GoBackButton';
-import Card from './Card';
+import GoBackButton from '../components/GoBackButton';
+import Card from '../components/Card';
 import SkeletonContent from "react-native-skeleton-content";
 
 Feather.loadFont();

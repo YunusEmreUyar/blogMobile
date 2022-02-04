@@ -6,7 +6,7 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import colors from '../assets/colors/color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Card from './Card';
+import Card from '../components/Card';
 import SkeletonContent from 'react-native-skeleton-content';
 
 const proxy = "https://artandmovieisnotgonnabethename.herokuapp.com";
@@ -37,7 +37,6 @@ class Home extends React.Component {
         .then(resp => resp.json())
         .then(resp => this.setState({posts: resp, isPostLoading: false}))
         .catch(err => console.log("ERROR", err));
-
     }
 
     renderPostItem = ({item}) => {
@@ -77,10 +76,10 @@ class Home extends React.Component {
                         <Text style={styles.titlesTitle}>A beautiful blog</Text>
                     </View>
 
-                    <Button 
+                    {/*<Button 
                         title="Login"
                         onPress={() => this.props.navigation.navigate("Login")}
-                    />
+                    />*/}
 
                     {/* Categories */}                        
                         <SkeletonContent

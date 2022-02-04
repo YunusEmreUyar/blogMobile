@@ -2,7 +2,11 @@ import { Text, View, StyleSheet, Image, TouchableOpacity, useWindowDimensions,Sc
 import colors from "../assets/colors/color";
 import Feather from 'react-native-vector-icons/Feather';
 import RenderHtml, {defaultSystemFonts} from 'react-native-render-html';
-import GoBackButton from "./GoBackButton";
+import GoBackButton from '../components/GoBackButton';
+import {like} from '../utils/AuthUtils';
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const proxy = 'https://artandmovieisnotgonnabethename.herokuapp.com';
 Feather.loadFont();
@@ -13,11 +17,25 @@ export default Details = ({route, navigation}) => {
     const target = route.params.target;
     const {width} = useWindowDimensions();
     const dateCreated = target.date_created.substring(0, 10).split("-").join(" ");
+    const [isAlreadyLiked, setIsAlreadyLiked] = useState(false);
+
+
+    useEffect(() => {
+        AsyncStorage.getItem("userId")
+        .then(id => {
+            if (target.likes.includes(id) === true) {
+                setIsAlreadyLiked(true); 
+            }
+        })
+        .catch(err => {});
+    });
+
 
     if (!target.content.includes(proxy)) {
         target.content = target.content.split("src=\"").join(`src=\"${proxy}`);
     }
     
+
     return (
         <View style={styles.container}>
             <ScrollView
@@ -68,11 +86,16 @@ export default Details = ({route, navigation}) => {
             {/* Like section */}
             <View style={styles.likeSectionWrapper}>
                 <Text style={styles.likeCounter}>{target.likes.length} times liked.</Text>
-                <Button 
-                    title="Like"
-                    color={colors.price}
-                    accessibilityLabel="Learn more about"
-                />
+                {isAlreadyLiked
+                ?   <Text>You already liked.</Text>
+                :   <Button 
+                        title="Like"
+                        color={colors.price}
+                        onPress={() => like()}
+                        accessibilityLabel="Learn more about"
+                    />
+                }
+                
             </View>
 
             {/* Author Detail Section */}
