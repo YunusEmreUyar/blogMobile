@@ -4,6 +4,9 @@
 App uses [this](http://artandmovieisnotgonnabethename.herokuapp.com/) blog website as backend. <br/>
 You can reach backend codes from [this](https://github.com/YunusEmreUyar/Django-Blog) repository of mine.
 
+All blog features not implemented, this project is not completed yet.
+
+
 ## Implemented Libraries
 react-navigation<br/>
 expo<br/>
