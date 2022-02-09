@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity, useWindowDimensions,ScrollView, Button } from "react-native";
+import { Text, View, StyleSheet, FlatList, Image, useWindowDimensions,ScrollView, Button } from "react-native";
 import colors from "../assets/colors/color";
 import Feather from 'react-native-vector-icons/Feather';
 import RenderHtml, {defaultSystemFonts} from 'react-native-render-html';
@@ -18,9 +18,29 @@ export default Details = ({route, navigation}) => {
     const {width} = useWindowDimensions();
     const dateCreated = target.date_created.substring(0, 10).split("-").join(" ");
     const [isAlreadyLiked, setIsAlreadyLiked] = useState(false);
-
+    const [comments, setComments] = useState([]);
 
     useEffect(() => {
+        fetch(proxy+`/api/comment/${target.id}`)
+        .then(resp => resp.json())
+        .then(json => {
+            if (json.detail) {
+                setComments([{
+                    id:0,
+                    created_by: {
+                        username: "",
+                        profile: {
+                            profile_pic: "/static/default-profile.png"
+                        }
+                    },
+                    content: "Nobody commented this article yet."
+                }]);
+            } else {
+                setComments(json);
+            }
+        })
+        .catch(err => {});
+
         AsyncStorage.getItem("userId")
         .then(id => {
             if (target.likes.includes(id) === true) {
@@ -28,14 +48,32 @@ export default Details = ({route, navigation}) => {
             }
         })
         .catch(err => {});
-    });
+    }, []);
 
 
     if (!target.content.includes(proxy)) {
         target.content = target.content.split("src=\"").join(`src=\"${proxy}`);
     }
-    
 
+
+    const renderCommentItem = ({item}) => {
+        return (
+            <View style={styles.commentWrapper}>
+                <View>
+                    <Image
+                        style={styles.commentCreatorProfile}
+                        source={{uri: proxy+item.created_by.profile.profile_pic}}
+                    />
+                    <Text style={styles.commentCreatorUsername}>{item.created_by.username}</Text>
+                </View>
+                <View style={styles.commentBody}>
+                    <Text style={styles.commentContent}>{item.content}</Text>
+                </View>
+            </View>
+        );
+    }
+
+    
     return (
         <View style={styles.container}>
             <ScrollView
@@ -108,6 +146,15 @@ export default Details = ({route, navigation}) => {
             </View>
 
             {/* Comment section */}
+            <Text style={styles.commentHeader}>Comments</Text>
+            <FlatList
+                keyExtractor={item => item.id}
+                data={comments}
+                scrollEnabled={false}
+                renderItem={renderCommentItem}
+            />
+
+
 
             </ScrollView>
         </View>
@@ -218,5 +265,37 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    commentBody: {
+        marginLeft: 10,
+        justifyContent: 'center',
+        padding: 10,
+        flexShrink: 1
+    },
+    commentCreator: {
+    },
+    commentCreatorProfile: {
+        width: 60,
+        height: 60,
+        borderRadius: 30
+    },
+    commentCreatorUsername: {
+        fontFamily: "Montserrat-SemiBold",
+        fontSize: 12
+    },
+    commentWrapper: {
+        flexDirection: 'row',
+        padding: 8
+    },
+    commentHeader: {
+        margin: 10,
+        fontFamily: "Montserrat-Bold",
+        fontSize: 24
+    },
+    commentContent: {
+        lineHeight: 20,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 14,
+        textAlign: 'justify'
     }
 });

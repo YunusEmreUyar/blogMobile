@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#353942"
-      }
+      },
+      "package": "com.devye.Blog"
     },
     "web": {
       "favicon": "./assets/icon.png"
