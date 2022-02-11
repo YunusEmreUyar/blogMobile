@@ -55,7 +55,7 @@ class Home extends React.Component {
                         name="chevron-right"
                         size={8}
                         style={styles.categorySelectIcon}
-                        color={item.selected ? colors.black: colors.white} />
+                        color={colors.white} />
                 </View>
             </TouchableOpacity>
         );
@@ -72,14 +72,9 @@ class Home extends React.Component {
 
                     {/* Title */}
                     <View style={styles.titlesWrapper}>
-                        <Text style={styles.titlesSubTitle}>Art & Movie</Text>
-                        <Text style={styles.titlesTitle}>A beautiful blog</Text>
+                        <Text style={styles.titlesSubTitle}>Pencere</Text>
+                        <Text style={styles.titlesTitle}>~Yunus Emre Uyar</Text>
                     </View>
-
-                    {/*<Button 
-                        title="Login"
-                        onPress={() => this.props.navigation.navigate("Login")}
-                    />*/}
 
                     {/* Categories */}                        
                         <SkeletonContent
@@ -177,7 +172,7 @@ const styles = StyleSheet.create({
     },
     categorySelectWrapper : {
         alignSelf: 'center',
-        backgroundColor: colors.secondary,
+        backgroundColor: colors.price,
         justifyContent: 'center',
         marginTop: 20,
         width: 26,

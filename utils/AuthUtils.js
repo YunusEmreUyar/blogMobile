@@ -31,6 +31,15 @@ function authenticate(username, password, navigation) {
     }
 };
 
+async function handleStoreUsernamePassword(username, password) {
+    try {
+        await AsyncStorage.setItem("username", username);
+        await AsyncStorage.setItem("password", password);
+    } catch (error) {
+        
+    }
+}
+
 async function handleAsyncStorage(token, username, password) {
     try {
         await AsyncStorage.setItem("token", token);
@@ -61,7 +70,7 @@ function like() {
         fetch(proxy+`api/like/${id}`, {
             method: "PUT",
             headers: {
-                "Authentication": token,
+                "Authentication": "Bearer " + token,
                 "Content-Type": "application/json"
             }
         })
@@ -81,4 +90,4 @@ function like() {
 }
 
 
-export {authenticate, like};
+export {authenticate, like, handleStoreUsernamePassword};

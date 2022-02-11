@@ -98,7 +98,7 @@ export default Category = ({route, navigation}) => {
                                 scrollEnabled={false}
                             />
                         </SafeAreaView>
-                    </View> 
+                    </View>
                 }
             </SkeletonContent>            
 

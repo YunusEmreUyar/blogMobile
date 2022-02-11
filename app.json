@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "blogProject",
-    "slug": "blogProject",
+    "name": "Pencere",
+    "slug": "PencereBlog",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#353942"
+      "backgroundColor": "#f8f7f2"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,9 +22,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#353942"
+        "backgroundColor": "#f8f7f2"
       },
-      "package": "com.devye.Blog"
+      "package": "com.devye.blog"
     },
     "web": {
       "favicon": "./assets/icon.png"

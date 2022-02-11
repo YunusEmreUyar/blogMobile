@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Image, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
+import {View, StyleSheet, Image, Text, TextInput, ActivityIndicator, KeyboardAvoidingView, TouchableOpacity, ScrollView} from 'react-native';
 import colors from '../assets/colors/color';
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import {authenticate} from '../utils/AuthUtils';
 
 class Login extends React.Component {
@@ -10,7 +9,8 @@ class Login extends React.Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            isFetching: false
         };
         this.navigation = props.navigation;
     }
@@ -24,47 +24,62 @@ class Login extends React.Component {
     }
 
     render() {
-
         return (
-            <View style={styles.container}>
-                <Image
-                    source={require('../assets/icon.png')}
-                    style={styles.icon}
-                />
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                    <Text style={styles.helperText}>Username</Text>
-                    <TextInput 
-                        placeholder='username'
-                        style={styles.input}
-                        onChange={this.setUsername}
+            <ScrollView
+                keyboardShouldPersistTaps='handled'
+                contentInsetAdjustmentBehavior="automatic"
+                showsVerticalScrollIndicator={false}    
+            >
+                <View style={styles.container}>
+                    <Image
+                        source={require('../assets/icon.png')}
+                        style={styles.icon}
                     />
-                    <Text style={styles.helperText}>Password</Text>
-                    <TextInput
-                        placeholder='password'
-                        style={styles.input}
-                        secureTextEntry
-                        onChange={this.setPassword}
-                    />
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}>
+                        <Text style={styles.helperText}>Username</Text>
+                        <TextInput 
+                            placeholder='username'
+                            style={styles.input}
+                            onChange={this.setUsername}
+                        />
+                        <Text style={styles.helperText}>Password</Text>
+                        <TextInput
+                            placeholder='password'
+                            style={styles.input}
+                            secureTextEntry
+                            onChange={this.setPassword}
+                        />
+                        {
+                            this.state.isFetching
+                            ?   (<ActivityIndicator size={"large"} color={colors.price} />)
+                            :   (<TouchableOpacity
+                                    style={styles.loginBtn}
+                                    onPress={() => {
+                                        if(this.state.username.length > 3 && this.state.password.length > 3) {
+                                            this.setState({isFetching: true});
+                                        }
+                                        authenticate(this.state.username, this.state.password, this.navigation);}}
+                                >
+                                    <Text style={styles.loginBtnText}>Login</Text>
+                                </TouchableOpacity>)
+                        }
+                        
 
-                    <TouchableOpacity
-                        style={styles.loginBtn}
-                        onPress={() => authenticate(this.state.username, this.state.password, this.navigation)}
-                    >
-                        <Text style={styles.loginBtnText}>Login</Text>
-                    </TouchableOpacity>
+                        <View style={styles.registerLink}>
+                            <Text>Need an account?</Text>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate("Register")}
+                                style={{marginHorizontal: 10}}
+                            >
+                                <Text style={{color: colors.price}}>Register</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </KeyboardAvoidingView>
+                </View>
+            </ScrollView>
+            
 
-                    <View style={styles.registerLink}>
-                        <Text>Need an account?</Text>
-                        <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate("Register")}
-                            style={{marginHorizontal: 10}}
-                        >
-                            <Text style={{color: colors.price}}>Register</Text>
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
-            </View>
         );
     }
 }
@@ -78,10 +93,11 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     icon: {
-        width: 100,
-        height: 100,
+        width: 120,
+        height: 120,
         resizeMode: 'contain',
-        borderRadius: 20
+        borderRadius: 20,
+        marginTop: '20%'
     },
     input: {
         minWidth: '80%',

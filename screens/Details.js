@@ -33,7 +33,7 @@ export default Details = ({route, navigation}) => {
                             profile_pic: "/static/default-profile.png"
                         }
                     },
-                    content: "Nobody commented this article yet."
+                    content: "There is no comment for this article yet."
                 }]);
             } else {
                 setComments(json);
