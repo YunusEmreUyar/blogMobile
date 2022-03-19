@@ -1,10 +1,10 @@
 # React Native Blog App
 
 ## Backend
-App uses [this](http://artandmovieisnotgonnabethename.herokuapp.com/) blog website as backend. <br/>
-You can reach backend codes from [this](https://github.com/YunusEmreUyar/Django-Blog) repository of mine.
+App uses [pencere blog](https://pencereblog.pythonanywhere.com/) website as backend. <br/>
+You can reach backend codes from [django-blog](https://github.com/YunusEmreUyar/Django-Blog) repository.
 
-All blog features not implemented, this project is not completed yet.
+All blog features not implemented and this project is not completed yet but you can interact blog posts via commenting.
 
 
 ## Implemented Libraries
@@ -23,3 +23,7 @@ react-native-async-storage<br/>
 `npm install`<br/>
 `expo start`<br/>
 
+## Some Pictures From The Project
+<img src="presentation/home.jpg" width="40%" height="auto"/>
+<img src="presentation/second.jpg" width="40%" height="auto"/>
+<img src="presentation/third.jpg" width="30%" height="auto"/>
