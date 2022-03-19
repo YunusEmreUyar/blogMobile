@@ -37,15 +37,15 @@ class Login extends React.Component {
                     />
                     <KeyboardAvoidingView
                         behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                        <Text style={styles.helperText}>Username</Text>
+                        <Text style={styles.helperText}>Kullanıcı adı</Text>
                         <TextInput 
-                            placeholder='username'
+                            placeholder='kullanıcı adı'
                             style={styles.input}
                             onChange={this.setUsername}
                         />
-                        <Text style={styles.helperText}>Password</Text>
+                        <Text style={styles.helperText}>Şifre</Text>
                         <TextInput
-                            placeholder='password'
+                            placeholder='şifre'
                             style={styles.input}
                             secureTextEntry
                             onChange={this.setPassword}
@@ -59,20 +59,22 @@ class Login extends React.Component {
                                         if(this.state.username.length > 3 && this.state.password.length > 3) {
                                             this.setState({isFetching: true});
                                         }
-                                        authenticate(this.state.username, this.state.password, this.navigation);}}
+                                        authenticate(this.state.username, this.state.password, this.navigation);
+                                        setTimeout(() => {this.setState({isFetching: false})}, 2000);
+                                    }}
                                 >
-                                    <Text style={styles.loginBtnText}>Login</Text>
+                                    <Text style={styles.loginBtnText}>Giriş yap</Text>
                                 </TouchableOpacity>)
                         }
                         
 
                         <View style={styles.registerLink}>
-                            <Text>Need an account?</Text>
+                            <Text>Bir hesaba mı ihtiyacınız var?</Text>
                             <TouchableOpacity
                                 onPress={() => this.props.navigation.navigate("Register")}
                                 style={{marginHorizontal: 10}}
                             >
-                                <Text style={{color: colors.price}}>Register</Text>
+                                <Text style={{color: colors.price}}>Kayıt ol</Text>
                             </TouchableOpacity>
                         </View>
                     </KeyboardAvoidingView>

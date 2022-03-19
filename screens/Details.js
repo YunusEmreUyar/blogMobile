@@ -1,14 +1,12 @@
-import { Text, View, StyleSheet, FlatList, Image, useWindowDimensions,ScrollView, Button } from "react-native";
+import { Text, View, TextInput, StyleSheet, FlatList, Image, useWindowDimensions,ScrollView, Button, Alert } from "react-native";
 import colors from "../assets/colors/color";
 import Feather from 'react-native-vector-icons/Feather';
 import RenderHtml, {defaultSystemFonts} from 'react-native-render-html';
 import GoBackButton from '../components/GoBackButton';
-import {like} from '../utils/AuthUtils';
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-const proxy = 'https://artandmovieisnotgonnabethename.herokuapp.com';
+const proxy = 'https://pencereblog.pythonanywhere.com';
 Feather.loadFont();
 const systemFonts = ["Montserrat-Regular", ...defaultSystemFonts];
 
@@ -17,8 +15,8 @@ export default Details = ({route, navigation}) => {
     const target = route.params.target;
     const {width} = useWindowDimensions();
     const dateCreated = target.date_created.substring(0, 10).split("-").join(" ");
-    const [isAlreadyLiked, setIsAlreadyLiked] = useState(false);
     const [comments, setComments] = useState([]);
+    const [comment, setComment] = useState('');
 
     useEffect(() => {
         fetch(proxy+`/api/comment/${target.id}`)
@@ -33,7 +31,7 @@ export default Details = ({route, navigation}) => {
                             profile_pic: "/static/default-profile.png"
                         }
                     },
-                    content: "There is no comment for this article yet."
+                    content: "Bu gönderi için henüz hiçbir yorum yok. İlk sen ol."
                 }]);
             } else {
                 setComments(json);
@@ -41,18 +39,38 @@ export default Details = ({route, navigation}) => {
         })
         .catch(err => {});
 
-        AsyncStorage.getItem("userId")
-        .then(id => {
-            if (target.likes.includes(id) === true) {
-                setIsAlreadyLiked(true); 
-            }
-        })
-        .catch(err => {});
     }, []);
 
 
     if (!target.content.includes(proxy)) {
         target.content = target.content.split("src=\"").join(`src=\"${proxy}`);
+    }
+
+    const handleSubmit = () => {
+        AsyncStorage.getItem("token")
+        .then(token => {
+            fetch(proxy + `/api/comment/create/${target.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + token
+                },
+                body: JSON.stringify({
+                    content: comment
+                })
+            })
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                if (json.detail) {
+                    Alert.alert("Yanıt", json.detail);
+                } else {
+                    setComments([json, ...comments]);
+                }
+            })
+            .catch(err => {});
+        })
+        .catch(err => {});
     }
 
 
@@ -77,6 +95,7 @@ export default Details = ({route, navigation}) => {
     return (
         <View style={styles.container}>
             <ScrollView
+                keyboardShouldPersistTaps='handled'
                 contentInsetAdjustmentBehavior="automatic"
                 showsVerticalScrollIndicator={false}
             >
@@ -103,7 +122,7 @@ export default Details = ({route, navigation}) => {
                     />
                 </View>
                 <View style={styles.cardDescInner}>
-                    <Text style={{marginRight:5}}>{target.estimated_reading_time} mins to read.</Text>
+                    <Text style={{marginRight:5}}>{target.estimated_reading_time} dakikalık okuma.</Text>
                     <Feather
                         color={colors.price}
                         name="book-open"
@@ -121,21 +140,7 @@ export default Details = ({route, navigation}) => {
                 />
             </View>
 
-            {/* Like section */}
-            <View style={styles.likeSectionWrapper}>
-                <Text style={styles.likeCounter}>{target.likes.length} times liked.</Text>
-                {isAlreadyLiked
-                ?   <Text>You already liked.</Text>
-                :   <Button 
-                        title="Like"
-                        color={colors.price}
-                        onPress={() => like()}
-                        accessibilityLabel="Learn more about"
-                    />
-                }
-                
-            </View>
-
+            
             {/* Author Detail Section */}
             <View style={styles.authorDetailWrapper}>
                 <View style={styles.authorHeadWrapper}>
@@ -146,14 +151,27 @@ export default Details = ({route, navigation}) => {
             </View>
 
             {/* Comment section */}
-            <Text style={styles.commentHeader}>Comments</Text>
+            <Text style={styles.commentHeader}>Yorumlar</Text>
             <FlatList
                 keyExtractor={item => item.id}
                 data={comments}
                 scrollEnabled={false}
                 renderItem={renderCommentItem}
             />
-
+            <View style={{marginBottom:10, justifyContent:'center', alignItems: 'center', flexDirection: 'row'}}>
+                <TextInput 
+                    multiline={true}
+                    placeholder="Bir yorum ekle."
+                    style={styles.input}
+                    onChange={(e) => setComment(e.nativeEvent.text)}
+                />
+                <Button 
+                    style={{margin:10, borderRadius: 10}}
+                    title="Gönder"
+                    color={colors.price}
+                    onPress={handleSubmit}
+                />
+            </View>
 
 
             </ScrollView>
@@ -297,5 +315,23 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Regular',
         fontSize: 14,
         textAlign: 'justify'
+    },
+    input: {
+        minWidth: '80%',
+        maxWidth: '80%',
+        backgroundColor: colors.textLight,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        margin: 10,
+        borderRadius: 15,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        fontFamily: 'Montserrat-Regular',
+        fontSize: 14
     }
 });

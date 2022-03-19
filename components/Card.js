@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import colors from "../assets/colors/color";
 
-const proxy = "https://artandmovieisnotgonnabethename.herokuapp.com";
+const proxy = "https://pencereblog.pythonanywhere.com";
 
 
 export default Card = ({item, navigation}) => {

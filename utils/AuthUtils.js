@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
-const proxy = 'https://artandmovieisnotgonnabethename.herokuapp.com/';
+const proxy = 'https://pencereblog.pythonanywhere.com/';
 
 function authenticate(username, password, navigation) {
     if(username.length < 3 || password.length < 3) {
-        Alert.alert("Response", "Credentials must be longer than 3 digits.");
+        Alert.alert("Yanıt", "Kullanıcı adı ve şifre daha uzun olmalıdır.");
     } else {
         fetch(proxy+"api/token", {
             method: 'POST',
@@ -20,7 +20,7 @@ function authenticate(username, password, navigation) {
         .then(resp => resp.json())
         .then(json => {
             if(json.detail) {
-                Alert.alert("Response", json.detail);
+                Alert.alert("Yanıt", json.detail);
             } else {
                 navigation.navigate("Home");
                 handleAsyncStorage(json.access, username, password);
@@ -63,31 +63,6 @@ function getUserId() {
     .catch(err => {});
 }
 
-function like() {
-    AsyncStorage.getItem("userId")
-    .then(id => {AsyncStorage.getItem("token")
-    .then(token => {
-        fetch(proxy+`api/like/${id}`, {
-            method: "PUT",
-            headers: {
-                "Authentication": "Bearer " + token,
-                "Content-Type": "application/json"
-            }
-        })
-        .then(resp => resp.json())
-        .then(json => {
-            if(json.detail) {
-                Alert.alert("Response", json.detail);
-            }
-            return true;
-        })
-        .catch(err => {});
-    })})
-    .catch(err => {});
-
-    
-    
-}
 
 
-export {authenticate, like, handleStoreUsernamePassword};
+export {authenticate, handleStoreUsernamePassword, getUserId};

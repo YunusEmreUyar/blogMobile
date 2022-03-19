@@ -5,7 +5,7 @@ import GoBackButton from '../components/GoBackButton';
 import {handleStoreUsernamePassword, authenticate} from '../utils/AuthUtils';
 
 
-const proxy = "https://artandmovieisnotgonnabethename.herokuapp.com";
+const proxy = "https://pencereblog.pythonanywhere.com";
 
 class Register extends React.Component {
 
@@ -28,7 +28,6 @@ class Register extends React.Component {
             this.state.password2.length > 3 &&
             this.state.email.length > 3    
         ) {
-            console.log(this.state);
             fetch(proxy+"/api/register/", {
                 method: 'POST',
                 headers: {
@@ -43,12 +42,23 @@ class Register extends React.Component {
             })
             .then(response => response.json())
             .then(json => {
-                if(json.detail) {
-                    Alert.alert("Response", json.detail);
+                let msg = '';
+                if(json.password) {
+                    for(var item in json.password) {
+                        msg += `${json.password[item]}\n`;
+                    }
+                    Alert.alert("Yanıt", msg);
+                    this.setState({isFetching: false});
+                } else if (json.password2) {
+                    for(var item in json.password2) {
+                        msg += `${json.password2[item]}\n`;
+                    }
+                    Alert.alert("Yanıt", msg);
+                    this.setState({isFetching: false});
                 } else {
                     handleStoreUsernamePassword(this.state.username, this.state.password);
                     this.navigation.navigate("Login");
-                    Alert.alert("Response", "Please confirm your email before using this app.");
+                    Alert.alert("Yanıt", "Uygulamayı kullanmadan önce lütfen epostanızı onaylayınız.");
                 }
             })
             .catch(err => {});
@@ -76,28 +86,28 @@ class Register extends React.Component {
                                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                                 style={{flex:1}}
                             >
-                            <Text style={styles.helperText}>Username</Text>
+                            <Text style={styles.helperText}>Kullanıcı Adı</Text>
                             <TextInput 
-                                placeholder='username'
+                                placeholder='kullanıcı adı'
                                 style={styles.input}
                                 onChange={(e) => this.setState({username:e.nativeEvent.text})}
                             />
-                            <Text style={styles.helperText}>Email</Text>
+                            <Text style={styles.helperText}>E-posta</Text>
                             <TextInput 
-                                placeholder='email'
+                                placeholder='e-posta'
                                 style={styles.input}
                                 onChange={(e) => this.setState({email:e.nativeEvent.text})}
                             />
-                            <Text style={styles.helperText}>Password</Text>
+                            <Text style={styles.helperText}>Şifre</Text>
                             <TextInput
-                                placeholder='password'
+                                placeholder='şifre'
                                 style={styles.input}
                                 secureTextEntry
                                 onChange={(e) => this.setState({password:e.nativeEvent.text})}
                             />
-                            <Text style={styles.helperText}>Password confirm</Text>
+                            <Text style={styles.helperText}>Şifre onay</Text>
                             <TextInput
-                                placeholder='password confirm'
+                                placeholder='şifre onay'
                                 style={styles.input}
                                 secureTextEntry
                                 onChange={(e) => this.setState({password2:e.nativeEvent.text})}
@@ -112,7 +122,7 @@ class Register extends React.Component {
                                             this.handleSubmit()
                                         }}
                                     >
-                                        <Text style={styles.loginBtnText}>Login</Text>
+                                        <Text style={styles.loginBtnText}>Kayıt ol</Text>
                                     </TouchableOpacity>)
                             }
 

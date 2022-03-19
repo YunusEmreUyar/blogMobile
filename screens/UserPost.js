@@ -7,7 +7,7 @@ import Card from '../components/Card';
 import SkeletonContent from "react-native-skeleton-content";
 
 Feather.loadFont();
-const proxy = "https://artandmovieisnotgonnabethename.herokuapp.com";
+const proxy = "https://pencereblog.pythonanywhere.com";
 const WIDTH = Dimensions.get("window").width;
 
 class UserPost extends React.Component {

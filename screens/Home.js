@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Card from '../components/Card';
 import SkeletonContent from 'react-native-skeleton-content';
 
-const proxy = "https://artandmovieisnotgonnabethename.herokuapp.com";
+const proxy = "https://pencereblog.pythonanywhere.com";
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -31,12 +31,12 @@ class Home extends React.Component {
         fetch(`${proxy}/api/category`)
         .then(response => response.json())
         .then(result => this.setState({categories: result, isCategoryLoading: false}))
-        .catch(err => console.log("ERROR", err));
+        .catch(err => {});
         
         fetch(`${proxy}/api/post`)
         .then(resp => resp.json())
         .then(resp => this.setState({posts: resp, isPostLoading: false}))
-        .catch(err => console.log("ERROR", err));
+        .catch(err => {});
     }
 
     renderPostItem = ({item}) => {
@@ -72,8 +72,8 @@ class Home extends React.Component {
 
                     {/* Title */}
                     <View style={styles.titlesWrapper}>
-                        <Text style={styles.titlesSubTitle}>Pencere</Text>
-                        <Text style={styles.titlesTitle}>~Yunus Emre Uyar</Text>
+                        <Text style={styles.titlesSubTitle}>Pencere blog</Text>
+                        <Text style={styles.titlesTitle}>Bilim, mühendislik ve insanlık hakkında kendime notlar</Text>
                     </View>
 
                     {/* Categories */}                        
@@ -86,7 +86,7 @@ class Home extends React.Component {
                             ]}
                         >
                             <View style={styles.categoriesWrapper}>
-                                <Text style={styles.categoriesTitle}>Categories</Text>
+                                <Text style={styles.categoriesTitle}>Kategoriler</Text>
                                 <View style={styles.categoriesListWrapper}>
                                     <SafeAreaView style={{flex:1}}>
                                         
@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     },
     categoriesWrapper : {
         marginTop: 30,
+        //alignItems: 'flex-start'
     },
     categoriesTitle : {
         fontSize: 16,

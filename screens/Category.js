@@ -7,7 +7,7 @@ import GoBackButton from '../components/GoBackButton';
 import Card from '../components/Card';
 
 Feather.loadFont();
-const proxy = "https://artandmovieisnotgonnabethename.herokuapp.com";
+const proxy = "https://pencereblog.pythonanywhere.com";
 const WIDTH = Dimensions.get("window").width;
 
 export default Category = ({route, navigation}) => {
@@ -88,7 +88,7 @@ export default Category = ({route, navigation}) => {
                 ]}
             >
                 {isEmpty
-                ? <Text style={styles.notFoundText}>There is no post in this category yet.</Text>
+                ? <Text style={styles.notFoundText}>Henüz bu kategoride gönderi bulunmamaktadır.</Text>
                 :   <View style={styles.postsWrapper}>
                         <SafeAreaView style={{flex:1}}>
                             <FlatList

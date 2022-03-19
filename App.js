@@ -7,13 +7,6 @@ import HomeStack from './routes/homeStack';
 
 export default function App() {
 
-  useEffect(() => {
-    LogBox.ignoreLogs([
-      'VirtualizedLists should never be nested',
-      '[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!"'
-    ]);
-  });
-
   const [isReady, setIsReady] = useState(false);
 
   const fetchFonts = async () => {
@@ -35,7 +28,6 @@ export default function App() {
       );
     } else {
       return (
-        
         <HomeStack />
     );  
   }
